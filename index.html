@@ -1,0 +1,60 @@
+<html>
+    <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    </head>
+    <body>
+        Type any text and see what events happen<br>
+        <textarea name="input" cols="100" rows="1"></textarea><BR>
+        Events console
+        <input type="button" value="Clear" onclick="clearLog()"><br>
+        <textarea name="console" readonly cols="100" rows="40"></textarea><BR>
+
+        <script type="text/javascript">
+            var textElement = document.getElementsByName('input')[0];
+            var consoleElement = document.getElementsByName('console')[0];
+
+            function eventName(event) {
+                return event.type.padEnd(20) + ': ';
+            }
+
+            function output(log) {
+                consoleElement.scrollTop = consoleElement.scrollHeight;
+                if (log.length > 0) 
+                    consoleElement.value += log + ' (text=' + textElement.value + ')';
+                consoleElement.value += '\n';
+            }
+
+            function clearLog() {
+                consoleElement.value = '';
+            }
+
+            textElement.addEventListener("keydown", handleKeyboardEvent);
+            textElement.addEventListener("keypress", handleKeyboardEvent);
+            textElement.addEventListener("keyup", handleKeyboardEvent);
+            function handleKeyboardEvent(event){
+                output(eventName(event) + 'key=' + event.key + ', code=' + event.code + ', isComposing=' + event.isComposing);
+                if (event.type == 'keyup')
+                    output('');
+            }
+
+            textElement.addEventListener("beforeinput", handleInputEvent);
+            textElement.addEventListener("input", handleInputEvent);
+            function handleInputEvent(event){
+                output(eventName(event) + 'data=' + event.data + ', inputType=' + event.inputType + ', isComposing=' + event.isComposing);
+            }
+
+            textElement.addEventListener("compositionstart", handleCompositionEvent);
+            textElement.addEventListener("compositionupdate", handleCompositionEvent);
+            textElement.addEventListener("compositionend", handleCompositionEvent);
+            function handleCompositionEvent(event){
+                output(eventName(event) + 'data=' + event.data);
+            }
+
+            textElement.addEventListener("change", handleEvent);
+            function handleEvent(event){
+                output(eventName(event));
+            }
+
+        </script>
+    </body>
+</html>
