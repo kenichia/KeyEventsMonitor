@@ -32,7 +32,7 @@
             textElement.addEventListener("keypress", handleKeyboardEvent);
             textElement.addEventListener("keyup", handleKeyboardEvent);
             function handleKeyboardEvent(event){
-                output(eventName(event) + 'key=' + event.key + ', code=' + event.code + ', isComposing=' + event.isComposing);
+                output(eventName(event) + 'key=' + event.key + ', code=' + event.code + ', keyCode=' + event.keyCode + ', charCode=' + event.charCode + ', isComposing=' + event.isComposing);
                 if (event.type == 'keyup')
                     output('');
             }
